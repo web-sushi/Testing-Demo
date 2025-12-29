@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tours & Pricing — Hikari Path Tours</title>
+    <meta
+      name="description"
+      content="Explore private tours across Japan — city tours, regional journeys, food experiences, and custom itineraries."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- NAV -->
+    <header class="nav" data-nav>
+      <div class="container nav-inner">
+        <!-- Brand -->
+        <a class="brand" href="index.html" aria-label="Hikari Path Tours Home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-text">
+            <span class="brand-name">Hikari Path</span>
+            <span class="brand-sub">JAPAN TOURS</span>
+          </span>
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="tours.html" class="active" aria-current="page"
+            >Tours &amp; Pricing</a
+          >
+          <a href="gallery.html">Gallery &amp; Testimonials</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+
+        <!-- Right actions -->
+        <div class="nav-actions">
+          <!-- Currency Toggle (hook for JS) -->
+          <button
+            class="currency-toggle"
+            type="button"
+            data-currency-toggle
+            aria-label="Toggle currency between JPY and USD"
+          >
+            <span class="currency-pill" data-currency-label>JPY</span>
+            <span class="currency-hint" aria-hidden="true">⇄ USD</span>
+          </button>
+
+          <!-- Book button -->
+          <button
+            class="btn nav-book"
+            type="button"
+            data-open-booking
+            aria-haspopup="dialog"
+          >
+            Book
+          </button>
+
+          <!-- Hamburger -->
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+          data-nav-toggle
+        >
+          <span></span><span></span><span></span>
+        </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div class="mobile-menu" id="mobileMenu" hidden data-mobile-menu>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="tours.html" class="active">Tours &amp; Pricing</a>
+        <a href="gallery.html">Gallery &amp; Testimonials</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+          </div>
+    </header>
+
+    <main id="main">
+      <!-- HERO -->
+      <section class="hero hero--simple">
+        <div class="hero-bg">
+          <img src="assets/hero/hero-tours.jpg" alt="" />
+          <div class="hero-overlay"></div>
+        </div>
+
+        <div class="container hero-inner">
+          <p class="kicker">Tours & pricing</p>
+          <h1 class="hero-title">
+            Explore Japan with
+            <span class="accent">clarity & comfort</span>
+          </h1>
+          <p class="hero-lead">
+            Fixed-price private tours and flexible custom itineraries.
+          </p>
+        </div>
+      </section>
+
+      <!-- FEATURED TOURS -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Featured day tours</h2>
+            <p class="muted">
+              Our most popular private day experiences, perfect for travelers
+              who want to explore Japan's iconic destinations with flexibility
+              and comfort. Each tour is led by experienced local guides who
+              bring deep knowledge and cultural insights to every journey.
+              Whether you're interested in bustling city life, ancient
+              traditions, or natural wonders, these carefully curated tours
+              offer a perfect introduction to Japan's diverse beauty.
+            </p>
+            </div>
+
+          <div class="card-grid">
+            <article class="tour-card">
+              <img src="assets/tours/tokyo-day.jpg" alt="Tokyo day tour" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h3>Tokyo Day Tour</h3>
+            </div>
+                <p class="muted">
+                  Discover Tokyo's vibrant neighborhoods, from historic temples
+                  to modern districts. Experience local culture, sample
+                  authentic cuisine, and explore hidden gems with your private
+                  guide.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">4-10 Hrs</span>
+          </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-tokyo-day.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+              <button
+                    class="btn primary"
+                    data-book-tour
+                    data-tour-type="specialized"
+                    data-specialized-type="cultural"
+                    data-tour-name="Tokyo Day Tour"
+                    style="flex: 1; min-width: 120px;"
+                  >
+                    Book this tour
+              </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="tour-card">
+              <img src="assets/tours/kyoto-day.jpg" alt="Kyoto day tour" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h3>Kyoto Day Tour</h3>
+                </div>
+                <p class="muted">
+                  Immerse yourself in Kyoto's rich heritage as you visit ancient
+                  temples, stroll through traditional streets, and witness the
+                  timeless beauty of Japan's former capital. Your guide will
+                  share stories of geishas, samurais, and the city's cultural
+                  significance.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">4-10 Hrs</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-kyoto-day.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button
+                    class="btn primary"
+                    data-book-tour
+                    data-tour-type="specialized"
+                    data-specialized-type="cultural"
+                    data-tour-name="Kyoto Day Tour"
+                    style="flex: 1; min-width: 120px;"
+                  >
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="tour-card">
+              <img src="assets/tours/fuji-day.jpg" alt="Mount Fuji tour" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h3>Mount Fuji Day Tour</h3>
+                </div>
+                <p class="muted">
+                  Journey to Japan's most iconic landmark and experience the
+                  breathtaking beauty of Mount Fuji and the surrounding Five
+                  Lakes region. Enjoy scenic views, visit traditional villages,
+                  and capture unforgettable memories of this natural wonder.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">4-10 Hrs</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-fuji-day.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+              <button
+                    class="btn primary"
+                    data-book-tour
+                    data-tour-type="specialized"
+                    data-specialized-type="nature"
+                    data-tour-name="Mount Fuji Day Tour"
+                    style="flex: 1; min-width: 120px;"
+                  >
+                    Book this tour
+              </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- REGIONAL TOURS -->
+      <section class="section alt">
+        <div class="container">
+          <div class="section-head">
+            <h2>Regional tours</h2>
+            <p class="muted">
+              Explore Japan's diverse regions through multi-day journeys that
+              take you beyond the major cities. Each region offers unique
+              cultural experiences, stunning landscapes, and authentic local
+              encounters. Our regional tours are designed to give you a deeper
+              understanding of Japan's geographical and cultural diversity, from
+              the bustling Kanto region around Tokyo to the serene beauty of
+              Hokkaido. Customize your itinerary to visit multiple prefectures,
+              discover hidden gems, and create a truly personalized travel
+              experience that matches your interests and pace.
+            </p>
+          </div>
+
+          <div class="card-grid">
+            <article class="tour-card">
+              <img src="assets/tours/kanto.jpg" alt="Kanto Region" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Kanto Region</h4>
+                </div>
+                <p class="muted">
+                  Explore Tokyo and surrounding prefectures including Chiba,
+                  Kanagawa, Saitama, and more. Experience the perfect blend of
+                  modern city life and traditional culture across 7 prefectures.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">1-7 Days</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-kanto.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button
+                    class="btn primary"
+                    data-book-tour
+                    data-tour-type="regional"
+                    data-region="kanto"
+                    data-tour-name="Kanto Region Tour"
+                    style="flex: 1; min-width: 120px;"
+                  >
+                    Book this tour
+                  </button>
+                </div>
+            </article>
+            <article class="tour-card">
+              <img src="assets/tours/kansai.jpg" alt="Kansai Region" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Kansai Region</h4>
+                </div>
+                <p class="muted">
+                  Discover the cultural heart of Japan through Osaka, Kyoto,
+                  Nara, and neighboring prefectures. Immerse yourself in ancient
+                  traditions, historic temples, and vibrant local culture across
+                  6 prefectures.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">1-7 Days</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-kansai.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="regional"
+                  data-region="kansai"
+                  data-tour-name="Kansai Region Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+            <article class="tour-card">
+              <img src="assets/tours/kyushu.jpg" alt="Kyushu Region" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Kyushu Region</h4>
+                </div>
+                <p class="muted">
+                  Journey through Japan's southernmost main island, known for
+                  its active volcanoes, hot springs, and rich history. Explore
+                  Fukuoka, Nagasaki, Kumamoto, and more across 7 prefectures.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">1-7 Days</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-kyushu.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="regional"
+                  data-region="kyushu"
+                  data-tour-name="Kyushu Region Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+            <article class="tour-card">
+              <img src="assets/tours/chubu.jpg" alt="Chubu Region" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Chubu Region</h4>
+                </div>
+                <p class="muted">
+                  Experience central Japan's diverse landscapes from the
+                  Japanese Alps to coastal cities. Visit Nagano, Aichi,
+                  Shizuoka, and other prefectures across this mountainous
+                  region.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">1-7 Days</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-chubu.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="regional"
+                  data-region="chubu"
+                  data-tour-name="Chubu Region Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+            <article class="tour-card">
+              <img src="assets/tours/tohoku.jpg" alt="Tohoku Region" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Tohoku Region</h4>
+                </div>
+                <p class="muted">
+                  Discover northern Japan's natural beauty, hot springs, and
+                  traditional festivals. Explore Aomori, Sendai, and other
+                  prefectures known for their scenic landscapes and warm
+                  hospitality.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">1-7 Days</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-tohoku.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="regional"
+                  data-region="tohoku"
+                  data-tour-name="Tohoku Region Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+            <article class="tour-card">
+              <img src="assets/tours/shikoku.jpg" alt="Shikoku Region" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Shikoku Region</h4>
+                </div>
+                <p class="muted">
+                  Experience Japan's smallest main island, famous for its
+                  88-temple pilgrimage route, stunning coastlines, and
+                  traditional crafts. Visit all 4 prefectures in this peaceful
+                  region.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">1-7 Days</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-shikoku.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="regional"
+                  data-region="shikoku"
+                  data-tour-name="Shikoku Region Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+            <article class="tour-card">
+              <img src="assets/tours/hokkaido.jpg" alt="Hokkaido Region" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Hokkaido Region</h4>
+                </div>
+                <p class="muted">
+                  Explore Japan's northernmost island, known for its pristine
+                  nature, world-class skiing, fresh seafood, and unique Ainu
+                  culture. Perfect for nature lovers and outdoor enthusiasts.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">1-7 Days</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-hokkaido.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="regional"
+                  data-region="hokkaido"
+                  data-tour-name="Hokkaido Region Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+            <article class="tour-card">
+              <img src="assets/tours/chugoku.jpg" alt="Chugoku Region" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Chugoku Region</h4>
+                </div>
+                <p class="muted">
+                  Discover western Japan's historic sites, including Hiroshima's
+                  Peace Memorial and the ancient Izumo Shrine. Explore 5
+                  prefectures rich in history and natural beauty.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">1-7 Days</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-chugoku.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="regional"
+                  data-region="chugoku"
+                  data-tour-name="Chugoku Region Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- SPECIALIZED TOURS -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Specialized tours</h2>
+            <p class="muted">
+              Dive deep into specific interests with our themed tour
+              experiences. Whether you're passionate about Japanese cuisine,
+              fascinated by anime culture, seeking spiritual experiences, or
+              drawn to seasonal beauty, our specialized tours are designed
+              around your unique interests. Each tour is carefully curated to
+              provide authentic, immersive experiences that go beyond typical
+              tourist attractions. Available primarily in the Tokyo area, these
+              tours offer focused exploration of specific themes, allowing you
+              to connect deeply with aspects of Japanese culture that resonate
+              with you.
+            </p>
+          </div>
+
+          <div class="card-grid">
+            <article class="tour-card">
+              <img
+                src="assets/tours/special-cultural.jpg"
+                alt="Cultural Immersion"
+              />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Cultural Immersion</h4>
+                </div>
+                <p class="muted">
+                  Experience authentic Japanese traditions through sumo morning
+                  practices, geisha experiences, samurai festivals, ikebana
+                  flower arranging lessons, and pottery workshops. Immerse
+                  yourself in the rich cultural heritage of Japan with hands-on
+                  experiences led by local masters.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">4-10 Hrs</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                  <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-cultural-immersion.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="specialized"
+                  data-specialized-type="cultural"
+                  data-tour-name="Cultural Immersion Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="tour-card">
+              <img
+                src="assets/tours/special-anime.jpg"
+                alt="Anime & Pop Culture"
+              />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Anime & Pop Culture</h4>
+                </div>
+                <p class="muted">
+                  Explore Japan's vibrant anime and pop culture scene with
+                  visits to the Ghibli Museum, Gundam Base Tokyo, Suginami
+                  Animation Museum, Electric Town, and Toei Animation Museum.
+                  Discover the world of Japanese animation and pop culture that
+                  has captivated audiences worldwide.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">4-10 Hrs</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-anime-pop-culture.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="specialized"
+                  data-specialized-type="anime"
+                  data-tour-name="Anime & Pop Culture Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="tour-card">
+              <img
+                src="assets/tours/special-nature.jpg"
+                alt="Nature & Adventure"
+              />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Nature & Adventure</h4>
+                </div>
+                <p class="muted">
+                  Embark on outdoor adventures exploring Japan's natural
+                  wonders. Choose from Mt. Fuji, Mt. Takao, Oshino hakkai, Mt.
+                  Tsukuba, or Sarushima Island. These 6-8 hour tours offer
+                  breathtaking scenery, hiking opportunities, and a chance to
+                  connect with Japan's stunning natural landscapes.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">6-8 Hrs</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-nature-adventure.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="specialized"
+                  data-specialized-type="nature"
+                  data-tour-name="Nature & Adventure Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+              </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="tour-card">
+              <img src="assets/tours/special-food.jpg" alt="Food & Drink" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Food & Drink</h4>
+                </div>
+                <p class="muted">
+                  Savor Japan's culinary excellence through guided food tours in
+                  Tokyo, Osaka, Kyoto, Fukuoka, and Hokkaido. Sample street
+                  food, visit local markets, dine at hidden gems, and learn
+                  about regional specialties from passionate local guides.
+                  Perfect for food enthusiasts.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">4-6 Hrs</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-food-drink.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="specialized"
+                  data-specialized-type="food"
+                  data-tour-name="Food & Drink Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="tour-card">
+              <img src="assets/tours/special-history.jpg" alt="History & Art" />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>History & Art</h4>
+                </div>
+                <p class="muted">
+                  Explore Japan's rich historical and artistic heritage through
+                  visits to renowned museums including Tokyo National Museum,
+                  Edo-Tokyo Museum, National Museum of Japanese History, Kyoto
+                  National Museum, and Osaka Museum of History. Discover
+                  centuries of Japanese art, culture, and history.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">4-6 Hrs</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                  <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-history-art.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="specialized"
+                  data-specialized-type="history"
+                  data-tour-name="History & Art Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="tour-card">
+              <img
+                src="assets/tours/special-seasonal.jpg"
+                alt="Seasonal Focus"
+              />
+              <div class="tour-card-content">
+                <div class="tour-title-card">
+                  <h4>Seasonal Focus</h4>
+          </div>
+                <p class="muted">
+                  Experience Japan's seasonal beauty through cherry blossom
+                  viewing, autumn leaves tours, summer festivals, winter
+                  illuminations, and New Year traditions. Each season in Japan
+                  offers unique experiences and breathtaking natural displays
+                  that showcase the country's deep connection to nature.
+                </p>
+                <div class="tour-meta-cards">
+                  <div class="tour-duration-card">
+                    <span class="tour-meta-label">Duration</span>
+                    <span class="tour-meta-value">4-10 Hrs</span>
+                  </div>
+                  <div class="tour-price-card">
+                    <span class="tour-meta-label">From</span>
+                    <span
+                      class="tour-price"
+                      data-money
+                      data-jpy="20000"
+                      data-usd="135"
+                      >¥20,000</span
+                    >
+                    <span class="tour-price-note">/day</span>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <a href="tour-seasonal-focus.html" class="btn ghost" style="flex: 1; min-width: 120px;">
+                    View Details
+                  </a>
+                  <button class="btn primary" data-book-tour
+                  data-tour-type="specialized"
+                  data-specialized-type="seasonal"
+                  data-tour-name="Seasonal Focus Tour"
+                 style="flex: 1; min-width: 120px;">
+                    Book this tour
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- CUSTOM TOUR -->
+      <section class="section alt">
+        <div class="container">
+          <div class="section-head">
+            <h2>Custom tour</h2>
+            <p class="muted">
+              Create your perfect Japan itinerary tailored to your interests,
+              schedule, and preferences. Whether you're interested in specific
+              hobbies, cultural experiences, or off-the-beaten-path
+              destinations, our team will work with you to design a unique
+              journey that matches your travel style. From 4-hour focused
+              experiences to multi-day adventures, we'll help you build the
+              Japan trip of your dreams.
+            </p>
+          </div>
+
+          <div class="custom-tour-section">
+            <div class="custom-tour-content">
+              <img
+                src="assets/tours/custom-tour.jpg"
+                alt="Custom Tour"
+                class="custom-tour-image"
+              />
+              <div class="custom-tour-text">
+                <h3>Build Your Perfect Journey</h3>
+                <p class="muted">
+                  Tell us about your interests, hobbies, and what you'd like to
+                  experience in Japan. Our team will create a personalized
+                  itinerary that combines your passions with authentic local
+                  experiences. Whether you want to explore specific regions,
+                  focus on particular themes, or discover hidden gems, we'll
+                  craft a tour that's uniquely yours.
+                </p>
+                <p class="muted">
+                  Custom tours can range from 4 hours to 7 days, with flexible
+                  transportation options and the freedom to adjust your schedule
+                  as you go. Start planning your personalized Japan adventure
+                  today.
+                </p>
+                <button
+                  class="btn primary"
+                  data-book-tour
+                  data-tour-type="customized"
+                  data-tour-name="Custom Tour"
+                >
+                  Customize tour
+            </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <div class="footer-logo" aria-hidden="true"></div>
+          <div>
+            <div class="footer-name">Hikari Path Tours</div>
+            <div class="micro muted">Private Japan tours • Tokyo-based</div>
+        </div>
+        </div>
+
+        <div class="footer-right" aria-label="Social links">
+          <a class="icon-link" href="#" aria-label="Instagram (demo)">
+            <!-- Instagram icon -->
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z"
+                stroke="currentColor"
+                stroke-width="1.6"
+              />
+              <path
+                d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+                stroke="currentColor"
+                stroke-width="1.6"
+              />
+              <path
+                d="M17.5 6.5h.01"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              />
+            </svg>
+          </a>
+
+          <a class="icon-link" href="#" aria-label="Facebook (demo)">
+            <!-- Facebook icon -->
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M14 8h2V5h-2a4 4 0 0 0-4 4v2H8v3h2v7h3v-7h2.3l.7-3H13V9a1 1 0 0 1 1-1Z"
+                fill="currentColor"
+              />
+            </svg>
+          </a>
+
+          <a class="icon-link" href="#" aria-label="WhatsApp (demo)">
+            <!-- WhatsApp icon -->
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.4A10 10 0 1 0 12 2Z"
+                stroke="currentColor"
+                stroke-width="1.6"
+              />
+              <path
+                d="M9.2 8.8c.2-.5.4-.5.7-.5h.6c.2 0 .4.1.5.3l.8 1.8c.1.2.1.4 0 .5l-.5.6c-.1.1-.1.3 0 .5.6 1 1.4 1.8 2.4 2.4.2.1.4.1.5 0l.6-.5c.1-.1.3-.1.5 0l1.8.8c.2.1.3.3.3.5v.6c0 .3 0 .5-.5.7-.5.2-1.5.4-3-.2-1.5-.6-2.8-1.6-4-2.8-1.2-1.2-2.2-2.5-2.8-4-.6-1.5-.4-2.5-.2-3Z"
+                fill="currentColor"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <p class="micro muted">
+          © <span data-year></span> Hikari Path Tours. Demo website.
+        </p>
+      </div>
+    </footer>
+
+    <!-- BOOKING MODAL (Calendar Preview) -->
+    <div
+      class="modal"
+      hidden
+      data-modal="booking"
+        role="dialog"
+        aria-modal="true"
+    >
+      <div class="modal-backdrop" data-close-booking tabindex="-1"></div>
+
+      <div
+        class="modal-card"
+        role="document"
+        aria-label="Booking calendar preview"
+      >
+        <div class="modal-head">
+          <h2 class="modal-title">Check Availability</h2>
+          <button
+            class="modal-x"
+            type="button"
+            data-close-booking
+            aria-label="Close"
+          >
+            ×
+          </button>
+          </div>
+
+        <div class="modal-body">
+          <p class="muted">
+            Select your preferred dates to check tour availability. Green =
+            Free, Yellow = Busy, Red = Full.
+          </p>
+
+          <div class="booking-calendar" aria-label="Booking calendar">
+            <div class="calendar-header">
+              <button
+                class="calendar-nav"
+                type="button"
+                data-cal-prev
+                aria-label="Previous month"
+              >
+                ‹
+              </button>
+              <h3 class="calendar-month" data-cal-month></h3>
+              <button
+                class="calendar-nav"
+                type="button"
+                data-cal-next
+                aria-label="Next month"
+              >
+                ›
+              </button>
+            </div>
+            <div class="calendar-weekdays">
+              <div class="calendar-weekday">Sun</div>
+              <div class="calendar-weekday">Mon</div>
+              <div class="calendar-weekday">Tue</div>
+              <div class="calendar-weekday">Wed</div>
+              <div class="calendar-weekday">Thu</div>
+              <div class="calendar-weekday">Fri</div>
+              <div class="calendar-weekday">Sat</div>
+            </div>
+            <div class="calendar-grid" data-cal-grid></div>
+            <div class="calendar-legend">
+              <div class="legend-item">
+                <span class="legend-color legend-available"></span>
+                <span>Free</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color legend-busy"></span>
+                <span>Busy</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color legend-booked"></span>
+                <span>Full</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color legend-selected"></span>
+                <span>Selected</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-form-tabs">
+            <button class="booking-tab-btn" data-booking-tab="inquiry">
+              General Inquiry
+            </button>
+            <button class="booking-tab-btn active" data-booking-tab="booking">
+              Select Date
+            </button>
+          </div>
+
+          <!-- General Inquiry Form -->
+          <div class="booking-form-panel" data-panel="inquiry" hidden>
+            <form class="inquiry-form" id="inquiryForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="inquiry-name">Name *</label>
+                  <input type="text" id="inquiry-name" name="name" required />
+                </div>
+                <div class="form-group">
+                  <label for="inquiry-email">Email *</label>
+                  <input
+                    type="email"
+                    id="inquiry-email"
+                    name="email"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inquiry-contact">Contact Number *</label>
+                <input
+                  type="tel"
+                  id="inquiry-contact"
+                  name="contact"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="inquiry-about">What's the inquiry about? *</label>
+                <select id="inquiry-about" name="inquiry_about" required>
+                  <option value="">Select an option</option>
+                  <option value="available-tours">Available Tours</option>
+                  <option value="pricing">Pricing</option>
+                  <option value="about-company">About the Company</option>
+                  <option value="others">Others</option>
+              </select>
+                <div
+                  class="inquiry-suggestion"
+                  id="inquiry-suggestion"
+                  hidden
+                ></div>
+          </div>
+              <div class="form-group" id="inquiry-message-group" hidden>
+                <label for="inquiry-message">Message *</label>
+            <textarea
+                  id="inquiry-message"
+              name="message"
+              rows="4"
+              required
+            ></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn ghost" data-close-booking>
+                  Previous
+                </button>
+                <button type="submit" class="btn primary">Submit</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Booking Form (Multi-step) -->
+          <div class="booking-form-panel" data-panel="booking">
+            <!-- Step 1: Personal Information -->
+            <div class="booking-step" data-step="1">
+              <h3 class="step-title">Step 1: Personal Information</h3>
+              <form class="booking-form" id="bookingForm">
+                <div class="form-group">
+                  <label for="booking-name">Name *</label>
+                  <input type="text" id="booking-name" name="name" required />
+                </div>
+                <div class="form-group">
+                  <label for="booking-email">Email Address *</label>
+                  <input
+                    type="email"
+                    id="booking-email"
+                    name="email"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="booking-contact">Contact Number *</label>
+                  <input
+                    type="tel"
+                    id="booking-contact"
+                    name="contact"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="booking-people">Number of People *</label>
+                  <select id="booking-people" name="people" required>
+                    <option value="">Select number of people</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11+">11+</option>
+                  </select>
+                  <div class="form-group" id="people-custom-group" hidden>
+                    <label for="people-custom">Number of People *</label>
+                    <input
+                      type="number"
+                      id="people-custom"
+                      name="people_custom"
+                      min="11"
+                    />
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="button" class="btn ghost" data-close-booking>
+                    Go Back
+                  </button>
+                  <button type="button" class="btn primary" data-next-step>
+                    Next
+                  </button>
+                </div>
+        </form>
+    </div>
+
+            <!-- Step 2: Tour Selection -->
+            <div class="booking-step" data-step="2" hidden>
+              <h3 class="step-title">Step 2: Choose Your Tour</h3>
+              <div class="form-group">
+                <label>Tour Type *</label>
+                <div class="tour-type-selector">
+                  <label class="tour-type-option">
+                    <input
+                      type="radio"
+                      name="tour_type"
+                      value="regional"
+                      required
+                    />
+                    <span>Regional Tour</span>
+                  </label>
+                  <label class="tour-type-option">
+                    <input
+                      type="radio"
+                      name="tour_type"
+                      value="specialized"
+                      required
+                    />
+                    <span>Specialized Tour</span>
+                  </label>
+                  <label class="tour-type-option">
+                    <input
+                      type="radio"
+                      name="tour_type"
+                      value="customized"
+                      required
+                    />
+                    <span>Customized Tour</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Regional Tour Fields -->
+              <div class="tour-fields" id="regional-fields" hidden>
+                <div class="form-group">
+                  <label for="regional-region">Region *</label>
+                  <select id="regional-region" name="region">
+                    <option value="">Select a region</option>
+                    <option value="kanto">Kanto (Max 7 days)</option>
+                    <option value="kansai">Kansai (Max 6 days)</option>
+                    <option value="chubu">Chubu (Max 7 days)</option>
+                    <option value="tohoku">Tohoku (Max 6 days)</option>
+                    <option value="kyushu">Kyushu (Max 7 days)</option>
+                    <option value="shikoku">Shikoku (Max 4 days)</option>
+                    <option value="chugoku">Chugoku (Max 5 days)</option>
+                    <option value="hokkaido">Hokkaido (Max 3 days)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="regional-length">Length of Tour (Days) *</label>
+                  <select id="regional-length" name="tour_length">
+                    <option value="">Select length</option>
+                  </select>
+                </div>
+                <div class="form-group" id="regional-prefectures-group" hidden>
+                  <label>Prefectures *</label>
+                  <p class="field-helper" id="regional-helper"></p>
+                  <div
+                    class="prefecture-buttons"
+                    id="regional-prefectures"
+                  ></div>
+                </div>
+                <div class="form-group" id="regional-vehicle-group">
+                  <label>Vehicle *</label>
+                  <p class="field-helper" id="regional-vehicle-helper"></p>
+                  <div
+                    class="transport-buttons"
+                    id="regional-vehicle-buttons"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Specialized Tour Fields -->
+              <div class="tour-fields" id="specialized-fields" hidden>
+                <div class="form-group">
+                  <label for="specialized-type">Tour Type *</label>
+                  <select id="specialized-type" name="specialized_type">
+                    <option value="">Select type</option>
+                    <option value="cultural">Cultural Immersion</option>
+                    <option value="anime">Anime & Pop-culture</option>
+                    <option value="nature">Nature & Adventure</option>
+                    <option value="food">Food & Drink</option>
+                    <option value="history">History & Art</option>
+                    <option value="seasonal">Seasonal Focus</option>
+                  </select>
+                </div>
+                <div class="form-group" id="specialized-length-group" hidden>
+                  <label for="specialized-length">Tour Length *</label>
+                  <select id="specialized-length" name="specialized_length">
+                    <option value="">Select length</option>
+                  </select>
+                </div>
+                <div class="form-group" id="specialized-options-group" hidden>
+                  <label>Select Options *</label>
+                  <p class="field-helper" id="specialized-helper"></p>
+                  <div
+                    class="specialized-buttons"
+                    id="specialized-options"
+                  ></div>
+                </div>
+                <div class="form-group" id="specialized-transport-group" hidden>
+                  <label>Transportation *</label>
+                  <p class="field-helper" id="specialized-transport-helper"></p>
+                  <div
+                    class="transport-buttons"
+                    id="specialized-transport-buttons"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Customized Tour Fields -->
+              <div class="tour-fields" id="customized-fields" hidden>
+                <div class="form-group">
+                  <label for="customized-length">Tour Length *</label>
+                  <select id="customized-length" name="customized_length">
+                    <option value="">Select length</option>
+                    <option value="4hours">4 hours</option>
+                    <option value="6hours">6 hours</option>
+                    <option value="8hours">8 hours</option>
+                    <option value="10hours">10 hours</option>
+                    <option value="2days">2 days</option>
+                    <option value="3days">3 days</option>
+                    <option value="4days">4 days</option>
+                    <option value="5days">5 days</option>
+                    <option value="6days">6 days</option>
+                    <option value="7days">7 days</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="customized-interest"
+                    >What's your hobby, interest, etc? *</label
+                  >
+                  <textarea
+                    id="customized-interest"
+                    name="interest"
+                    rows="3"
+                    required
+                  ></textarea>
+                </div>
+                <div class="form-group" id="customized-transport-group">
+                  <label>Transportation *</label>
+                  <p class="field-helper" id="customized-transport-helper"></p>
+                  <div
+                    class="transport-buttons"
+                    id="customized-transport-buttons"
+                  ></div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn ghost" data-prev-step>
+                  Previous
+      </button>
+                <button type="button" class="btn primary" data-next-step>
+                  Next
+      </button>
+              </div>
+            </div>
+
+            <!-- Step 3: Pickup & Dropoff -->
+            <div class="booking-step" data-step="3" hidden>
+              <h3 class="step-title">Step 3: Pickup & Dropoff Details</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="pickup-type">Pickup Location Type *</label>
+                  <select id="pickup-type" name="pickup_type" required>
+                    <option value="">Select type</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="station">Station</option>
+                    <option value="airport">Airport</option>
+                  </select>
+                </div>
+                <div class="form-group" id="pickup-details-group" hidden>
+                  <label id="pickup-details-label">Pickup Details *</label>
+                  <input
+                    type="text"
+                    id="pickup-details"
+                    name="pickup_details"
+                  />
+                  <select id="pickup-airport" name="pickup_airport" hidden>
+                    <option value="">Select airport</option>
+                    <option value="narita">
+                      Narita International Airport (NRT)
+                    </option>
+                    <option value="haneda">Haneda Airport (HND)</option>
+                    <option value="kansai">
+                      Kansai International Airport (KIX)
+                    </option>
+                    <option value="chubu">
+                      Chubu Centrair International Airport (NGO)
+                    </option>
+                    <option value="fukuoka">Fukuoka Airport (FUK)</option>
+                    <option value="sapporo">New Chitose Airport (CTS)</option>
+                    <option value="naha">Naha Airport (OKA)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="dropoff-type">Dropoff Location Type *</label>
+                  <select id="dropoff-type" name="dropoff_type" required>
+                    <option value="">Select type</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="station">Station</option>
+                    <option value="airport">Airport</option>
+                  </select>
+                </div>
+                <div class="form-group" id="dropoff-details-group" hidden>
+                  <label id="dropoff-details-label">Dropoff Details *</label>
+                  <input
+                    type="text"
+                    id="dropoff-details"
+                    name="dropoff_details"
+                  />
+                  <select id="dropoff-airport" name="dropoff_airport" hidden>
+                    <option value="">Select airport</option>
+                    <option value="narita">
+                      Narita International Airport (NRT)
+                    </option>
+                    <option value="haneda">Haneda Airport (HND)</option>
+                    <option value="kansai">
+                      Kansai International Airport (KIX)
+                    </option>
+                    <option value="chubu">
+                      Chubu Centrair International Airport (NGO)
+                    </option>
+                    <option value="fukuoka">Fukuoka Airport (FUK)</option>
+                    <option value="sapporo">New Chitose Airport (CTS)</option>
+                    <option value="naha">Naha Airport (OKA)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="extra-info">Extra Information</label>
+                <textarea id="extra-info" name="extra_info" rows="4"></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn ghost" data-prev-step>
+                  Previous
+                </button>
+                <button type="button" class="btn primary" data-next-step>
+                  Next
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 4: Review & Summary -->
+            <div class="booking-step" data-step="4" hidden>
+              <h3 class="step-title">Step 4: Review & Confirm</h3>
+              <div class="booking-summary" id="booking-summary"></div>
+              <div class="booking-price" id="booking-price"></div>
+              <div class="form-actions">
+                <button type="button" class="btn ghost" data-prev-step>
+                  Previous
+                </button>
+                <button type="submit" class="btn primary" id="submit-booking">
+                  Submit Booking
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 4L4 10H7V16H13V10H16L10 4Z" fill="currentColor"/>
+      </svg>
+    </button>
+
+    <script src="main.js" defer></script>
+    <script src="booking-form.js" defer></script>
+  </body>
+</html>
