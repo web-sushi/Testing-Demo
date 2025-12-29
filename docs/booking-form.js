@@ -1306,6 +1306,99 @@ function initBookingForm() {
            customizedTransportBtn?.textContent || '';
   }
 
+  // Function to show message in modal
+  function showBookingMessage(message, type = 'success') {
+    const step4 = document.querySelector('[data-step="4"]');
+    if (!step4) return;
+    
+    // Remove existing message if any
+    const existingMessage = step4.querySelector('.booking-message');
+    if (existingMessage) {
+      existingMessage.remove();
+    }
+    
+    // Create message element
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `booking-message booking-message-${type}`;
+    messageDiv.innerHTML = message;
+    
+    // Insert message before form actions
+    const formActions = step4.querySelector('.form-actions');
+    if (formActions) {
+      formActions.insertAdjacentElement('beforebegin', messageDiv);
+    } else {
+      step4.appendChild(messageDiv);
+    }
+    
+    // Scroll to message
+    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Function to reset booking form
+  function resetBookingForm() {
+    // Get modal context
+    const modal = document.getElementById('bookingModal') || document.querySelector('[data-modal="booking"]');
+    if (!modal) return;
+    
+    // Reset all form inputs within modal
+    const allInputs = modal.querySelectorAll('input, select, textarea');
+    allInputs.forEach(input => {
+      if (input.type === 'radio' || input.type === 'checkbox') {
+        input.checked = false;
+      } else {
+        input.value = '';
+      }
+      input.classList.remove('error');
+    });
+    
+    // Reset selected buttons
+    modal.querySelectorAll('.prefecture-btn.selected, .specialized-btn.selected, .transport-btn.selected').forEach(btn => {
+      btn.classList.remove('selected');
+    });
+    
+    // Reset calendar selection
+    modal.querySelectorAll('.calendar-day.selected').forEach(day => {
+      day.classList.remove('selected');
+    });
+    
+    // Reset to Step 1
+    const allSteps = modal.querySelectorAll('.booking-step');
+    allSteps.forEach((step) => {
+      const stepNum = parseInt(step.dataset.step) || 0;
+      step.hidden = stepNum !== 1;
+    });
+    
+    // Reset currentStep
+    currentStep = 1;
+    if (window.setBookingCurrentStep) {
+      window.setBookingCurrentStep(1);
+    }
+    
+    // Clear summary and price
+    const summary = modal.querySelector('#booking-summary');
+    const priceDiv = modal.querySelector('#booking-price');
+    if (summary) summary.innerHTML = '';
+    if (priceDiv) priceDiv.innerHTML = '';
+    
+    // Clear any messages
+    const existingMessage = modal.querySelector('.booking-message');
+    if (existingMessage) {
+      existingMessage.remove();
+    }
+    
+    // Reset tour type selection
+    const tourTypeRadios = modal.querySelectorAll('input[name="tour_type"]');
+    tourTypeRadios.forEach(radio => {
+      radio.checked = false;
+    });
+    
+    // Hide all tour field groups
+    const tourFields = modal.querySelectorAll('.tour-fields');
+    tourFields.forEach(field => {
+      field.hidden = true;
+    });
+  }
+
   // Form submission
   const submitBooking = document.getElementById('submit-booking');
   if (submitBooking) {
@@ -1388,6 +1481,12 @@ function initBookingForm() {
       const originalText = submitBooking.textContent;
       submitBooking.textContent = 'Submitting...';
       
+      // Clear any previous messages
+      const existingMessage = document.querySelector('.booking-message');
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+      
       try {
         // Send POST request to backend API
         const response = await fetch('http://localhost:3000/api/bookings', {
@@ -1401,26 +1500,72 @@ function initBookingForm() {
         const data = await response.json();
         
         if (response.ok && data.success) {
-          // Success - show success message with booking ID
-          alert(`Booking submitted successfully! Your booking ID is: ${data.booking_id}`);
+          // Success - show success message in modal
+          const successMessage = `
+            <div style="text-align: center; padding: 2rem;">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">✓</div>
+              <h3 style="color: #10b981; margin-bottom: 0.5rem;">Booking request received</h3>
+              <p style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #374151;">
+                Your booking ID: <strong>${data.booking_id}</strong>
+              </p>
+              <p style="color: #6b7280; margin-top: 0.5rem;">We'll contact you shortly.</p>
+            </div>
+          `;
+          showBookingMessage(successMessage, 'success');
           
-          // Optionally close modal or reset form
+          // Hide submit button and form actions on success
+          const formActions = document.querySelector('[data-step="4"] .form-actions');
+          if (formActions) {
+            formActions.style.display = 'none';
+          }
+          
+          // Reset form after a short delay
+          setTimeout(() => {
+            resetBookingForm();
+          }, 500);
+          
+          // Close modal after 2.5 seconds
           const modal = document.getElementById('bookingModal') || document.querySelector('[data-modal="booking"]');
           if (modal) {
-            modal.hidden = true;
-            document.body.style.overflow = '';
+            setTimeout(() => {
+              modal.hidden = true;
+              document.body.style.overflow = '';
+              
+              // Restore form actions for next use
+              if (formActions) {
+                formActions.style.display = '';
+              }
+            }, 2500);
           }
         } else {
-          // Error from server
+          // Error from server - show error message in modal
           const errorMessage = data.error || 'Failed to submit booking';
-          alert(`Error: ${errorMessage}`);
+          const errorHtml = `
+            <div style="text-align: center; padding: 2rem;">
+              <div style="font-size: 3rem; margin-bottom: 1rem; color: #ef4444;">✗</div>
+              <h3 style="color: #ef4444; margin-bottom: 0.5rem;">Error</h3>
+              <p style="color: #6b7280;">${errorMessage}</p>
+            </div>
+          `;
+          showBookingMessage(errorHtml, 'error');
+          
+          // Re-enable submit button on error
+          submitBooking.disabled = false;
+          submitBooking.textContent = originalText;
         }
       } catch (error) {
-        // Network or other error
+        // Network or other error - show error message in modal
         console.error('Error submitting booking:', error);
-        alert('Error: Failed to connect to server. Please try again later.');
-      } finally {
-        // Re-enable submit button
+        const errorHtml = `
+          <div style="text-align: center; padding: 2rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem; color: #ef4444;">✗</div>
+            <h3 style="color: #ef4444; margin-bottom: 0.5rem;">Connection Error</h3>
+            <p style="color: #6b7280;">Failed to connect to server. Please try again later.</p>
+          </div>
+        `;
+        showBookingMessage(errorHtml, 'error');
+        
+        // Re-enable submit button on error
         submitBooking.disabled = false;
         submitBooking.textContent = originalText;
       }

@@ -188,6 +188,56 @@ exports.updateBooking = (req, res) => {
   res.status(200).json({ message: 'Update booking - to be implemented', id: req.params.id });
 };
 
+exports.updateStatus = (req, res) => {
+  try {
+    const bookingId = parseInt(req.params.id, 10);
+    const { status } = req.body;
+
+    // Validate booking ID
+    if (isNaN(bookingId) || bookingId < 1) {
+      return res.status(400).json({
+        error: 'Invalid booking ID'
+      });
+    }
+
+    // Validate status
+    const validStatuses = ['pending', 'contacted', 'confirmed', 'cancelled'];
+    if (!status || !validStatuses.includes(status)) {
+      return res.status(400).json({
+        error: `Invalid status. Must be one of: ${validStatuses.join(', ')}`
+      });
+    }
+
+    // Update booking status
+    Booking.update(bookingId, { status }, (err, result) => {
+      if (err) {
+        console.error('Error updating booking status:', err);
+        return res.status(500).json({
+          error: 'Failed to update booking status',
+          details: err.message
+        });
+      }
+
+      if (result.changes === 0) {
+        return res.status(404).json({
+          error: 'Booking not found'
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        status: status
+      });
+    });
+  } catch (error) {
+    console.error('Unexpected error in updateStatus:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      details: error.message
+    });
+  }
+};
+
 exports.deleteBooking = (req, res) => {
   res.status(200).json({ message: 'Delete booking - to be implemented', id: req.params.id });
 };

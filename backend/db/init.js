@@ -2,6 +2,123 @@ const fs = require('fs');
 const path = require('path');
 
 /**
+ * Execute a database operation wrapped in a promise
+ */
+function dbRun(db, sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(this);
+      }
+    });
+  });
+}
+
+/**
+ * Migrate bookings table to include 'contacted' status in CHECK constraint
+ * SQLite doesn't support ALTER TABLE for CHECK constraints, so we need to:
+ * 1. Create new table with updated constraint
+ * 2. Copy data from old table
+ * 3. Drop old table
+ * 4. Rename new table
+ * 5. Recreate indexes
+ * @param {Object} db - SQLite database instance
+ * @returns {Promise} - Resolves on success, rejects on error
+ */
+function migrateBookingsStatus(db) {
+  return new Promise((resolve, reject) => {
+    // Check if migration is needed by checking the table definition
+    db.get("SELECT sql FROM sqlite_master WHERE type='table' AND name='bookings'", (err, row) => {
+      if (err) {
+        return reject(err);
+      }
+
+      // If table doesn't exist, no migration needed
+      if (!row || !row.sql) {
+        return resolve();
+      }
+
+      // Check if 'contacted' is already in the constraint
+      if (row.sql.includes("'contacted'")) {
+        // Migration already done
+        return resolve();
+      }
+
+      console.log('Migrating bookings table to include "contacted" status...');
+
+      // Start transaction and chain operations
+      dbRun(db, 'BEGIN TRANSACTION')
+        .then(() => {
+          // Step 1: Create new table with updated constraint
+          return dbRun(db, `
+            CREATE TABLE bookings_new (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT NOT NULL,
+              email TEXT NOT NULL,
+              contact TEXT,
+              people INTEGER NOT NULL,
+              booking_type TEXT NOT NULL CHECK(booking_type IN ('regional', 'specialized', 'customized')),
+              selected_date DATE,
+              estimated_price DECIMAL(10, 2),
+              status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'contacted', 'confirmed', 'cancelled')),
+              created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+          `);
+        })
+        .then(() => {
+          // Step 2: Copy data from old table to new table
+          return dbRun(db, `
+            INSERT INTO bookings_new (id, name, email, contact, people, booking_type, selected_date, estimated_price, status, created_at)
+            SELECT id, name, email, contact, people, booking_type, selected_date, estimated_price, status, created_at
+            FROM bookings
+          `);
+        })
+        .then(() => {
+          // Step 3: Drop old table
+          return dbRun(db, 'DROP TABLE bookings');
+        })
+        .then(() => {
+          // Step 4: Rename new table to original name
+          return dbRun(db, 'ALTER TABLE bookings_new RENAME TO bookings');
+        })
+        .then(() => {
+          // Step 5: Recreate indexes
+          return dbRun(db, "CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status)");
+        })
+        .then(() => {
+          return dbRun(db, "CREATE INDEX IF NOT EXISTS idx_bookings_booking_type ON bookings(booking_type)");
+        })
+        .then(() => {
+          return dbRun(db, "CREATE INDEX IF NOT EXISTS idx_bookings_selected_date ON bookings(selected_date)");
+        })
+        .then(() => {
+          return dbRun(db, "CREATE INDEX IF NOT EXISTS idx_bookings_created_at ON bookings(created_at)");
+        })
+        .then(() => {
+          // Commit transaction
+          return dbRun(db, 'COMMIT');
+        })
+        .then(() => {
+          console.log('Bookings table migration completed successfully');
+          resolve();
+        })
+        .catch((migrationErr) => {
+          // Rollback on error
+          dbRun(db, 'ROLLBACK')
+            .catch((rollbackErr) => {
+              console.error('Error during rollback:', rollbackErr.message);
+            })
+            .finally(() => {
+              reject(migrationErr);
+            });
+        });
+    });
+  });
+}
+
+/**
  * Initialize database schema
  * Reads schema.sql and executes it to create all tables
  * Ensures schema is executed only once by checking if tables already exist
@@ -21,7 +138,14 @@ function initializeDatabase(db) {
       // If bookings table exists, schema is already initialized
       if (row) {
         console.log('Database schema already initialized');
-        return resolve();
+        // Run migration to update status constraint if needed
+        return migrateBookingsStatus(db)
+          .then(() => resolve())
+          .catch((migrationErr) => {
+            console.error('Migration error (non-fatal):', migrationErr.message);
+            // Continue even if migration fails (might already be migrated)
+            resolve();
+          });
       }
 
       // Schema not initialized, proceed with initialization

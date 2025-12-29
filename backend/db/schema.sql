@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS bookings (
     booking_type TEXT NOT NULL CHECK(booking_type IN ('regional', 'specialized', 'customized')),
     selected_date DATE,
     estimated_price DECIMAL(10, 2),
-    status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'confirmed', 'cancelled')),
+    status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'contacted', 'confirmed', 'cancelled')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

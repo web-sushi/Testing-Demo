@@ -797,6 +797,35 @@ a {
   margin: 0 0 8px 0;
 }
 
+.booking-message {
+  background: rgba(31, 35, 40, 0.03);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.booking-message-success {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.booking-message-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .booking-price .price-amount {
   font-size: 32px;
   font-weight: 700;
