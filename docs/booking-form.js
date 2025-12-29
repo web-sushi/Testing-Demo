@@ -1309,10 +1309,121 @@ function initBookingForm() {
   // Form submission
   const submitBooking = document.getElementById('submit-booking');
   if (submitBooking) {
-    submitBooking.addEventListener('click', (e) => {
+    submitBooking.addEventListener('click', async (e) => {
       e.preventDefault();
-      alert('Booking submitted! (This is a demo - in production, this would send the data to your server)');
-      // In production, you would send formData to your backend
+      
+      // Collect all booking form values
+      const name = document.getElementById('booking-name')?.value?.trim() || '';
+      const email = document.getElementById('booking-email')?.value?.trim() || '';
+      const contact = document.getElementById('booking-contact')?.value?.trim() || '';
+      const peopleSelect = document.getElementById('booking-people')?.value || '';
+      const peopleCustom = document.getElementById('people-custom')?.value || '';
+      const people = peopleSelect === '11+' ? parseInt(peopleCustom, 10) : parseInt(peopleSelect, 10);
+      
+      // Get tour type
+      const tourTypeRadio = document.querySelector('input[name="tour_type"]:checked');
+      const booking_type = tourTypeRadio?.value || '';
+      
+      // Get selected date from calendar
+      const selectedDateElement = document.querySelector('.calendar-day.selected');
+      const monthYear = document.querySelector('[data-cal-month]')?.textContent || '';
+      const dayText = selectedDateElement?.textContent || '';
+      const selected_date = selectedDateElement ? `${monthYear} ${dayText}` : '';
+      
+      // Get estimated price (from summary or calculate)
+      let estimated_price = null;
+      const priceDiv = document.getElementById('booking-price');
+      if (priceDiv) {
+        const priceText = priceDiv.textContent;
+        const yenMatch = priceText.match(/¥([\d,]+)/);
+        if (yenMatch) {
+          estimated_price = parseFloat(yenMatch[1].replace(/,/g, ''));
+        }
+      }
+      
+      // Collect all form details for the details JSON payload
+      const details = {
+        date: selected_date,
+        name: name,
+        email: email,
+        contact: contact,
+        people: peopleSelect === '11+' ? peopleCustom : peopleSelect,
+        peopleCustom: peopleCustom,
+        tourType: booking_type,
+        region: document.getElementById('regional-region')?.value || '',
+        regionalLength: document.getElementById('regional-length')?.value || '',
+        specializedLength: document.getElementById('specialized-length')?.value || '',
+        customizedLength: document.getElementById('customized-length')?.value || '',
+        tourLength: document.getElementById('regional-length')?.value || 
+                    document.getElementById('specialized-length')?.value ||
+                    document.getElementById('customized-length')?.value || '',
+        prefectures: Array.from(document.querySelectorAll('.prefecture-btn.selected')).map(btn => btn.dataset.value),
+        specializedType: document.getElementById('specialized-type')?.value || '',
+        specializedOptions: Array.from(document.querySelectorAll('.specialized-btn.selected')).map(btn => btn.dataset.value),
+        interest: document.getElementById('customized-interest')?.value || '',
+        vehicle: getTransportType(),
+        pickupType: document.getElementById('pickup-type')?.value || '',
+        pickupDetails: document.getElementById('pickup-details')?.value || 
+                      document.getElementById('pickup-airport')?.value || '',
+        dropoffType: document.getElementById('dropoff-type')?.value || '',
+        dropoffDetails: document.getElementById('dropoff-details')?.value || 
+                       document.getElementById('dropoff-airport')?.value || '',
+        extraInfo: document.getElementById('extra-info')?.value || ''
+      };
+      
+      // Build JSON payload with core fields and details
+      const payload = {
+        name: name,
+        email: email,
+        contact: contact,
+        people: people,
+        booking_type: booking_type,
+        selected_date: selected_date,
+        estimated_price: estimated_price,
+        details: details
+      };
+      
+      // Disable submit button and show loading state
+      submitBooking.disabled = true;
+      const originalText = submitBooking.textContent;
+      submitBooking.textContent = 'Submitting...';
+      
+      try {
+        // Send POST request to backend API
+        const response = await fetch('http://localhost:3000/api/bookings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+          // Success - show success message with booking ID
+          alert(`Booking submitted successfully! Your booking ID is: ${data.booking_id}`);
+          
+          // Optionally close modal or reset form
+          const modal = document.getElementById('bookingModal') || document.querySelector('[data-modal="booking"]');
+          if (modal) {
+            modal.hidden = true;
+            document.body.style.overflow = '';
+          }
+        } else {
+          // Error from server
+          const errorMessage = data.error || 'Failed to submit booking';
+          alert(`Error: ${errorMessage}`);
+        }
+      } catch (error) {
+        // Network or other error
+        console.error('Error submitting booking:', error);
+        alert('Error: Failed to connect to server. Please try again later.');
+      } finally {
+        // Re-enable submit button
+        submitBooking.disabled = false;
+        submitBooking.textContent = originalText;
+      }
     });
   }
 
