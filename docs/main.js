@@ -99,10 +99,18 @@ function initBookingModal() {
   const closeBtns = modal.querySelectorAll("[data-close], [data-close-booking], .modal-backdrop, .modal-x");
 
   openBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Show modal
       modal.hidden = false;
+      modal.removeAttribute("hidden");
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
+      
+      // Ensure modal is visible (handle CSS if needed)
+      modal.style.display = '';
     });
   });
 
@@ -243,15 +251,50 @@ function initBookingModal() {
     if (bookingPrice) {
       bookingPrice.innerHTML = '';
     }
+
+    // Reset inquiry form state
+    const inquiryForm = modal.querySelector('#inquiryForm');
+    if (inquiryForm && inquiryPanel) {
+      // Show form again (in case it was hidden after success)
+      inquiryForm.style.display = '';
+      
+      // Remove any success/error messages
+      const inquiryMessages = inquiryPanel.querySelectorAll('.inquiry-message-container');
+      inquiryMessages.forEach(msg => msg.remove());
+      
+      // Re-enable all form fields
+      const inquiryFields = inquiryForm.querySelectorAll('input, select, textarea, button');
+      inquiryFields.forEach(field => {
+        field.disabled = false;
+      });
+      
+      // Reset submit button text
+      const submitBtn = inquiryForm.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.textContent = 'Submit';
+      }
+    }
+  }
+
+  // Close modal function
+  function closeModal() {
+    resetBookingForm();
+    modal.hidden = true;
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
   }
 
   closeBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      resetBookingForm();
-      modal.hidden = true;
-      modal.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
-    });
+    btn.addEventListener("click", closeModal);
+  });
+  
+  // Use event delegation for dynamically created close buttons
+  modal.addEventListener("click", (e) => {
+    const closeBtn = e.target.closest("[data-close-booking]");
+    if (closeBtn) {
+      e.preventDefault();
+      closeModal();
+    }
   });
 
   // Close on Escape key

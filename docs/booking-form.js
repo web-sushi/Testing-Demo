@@ -1597,13 +1597,171 @@ function initBookingForm() {
     });
   }
 
+  // Handle inquiry form submission
   const inquiryForm = document.getElementById('inquiryForm');
   if (inquiryForm) {
-    inquiryForm.addEventListener('submit', (e) => {
+    inquiryForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      alert('Inquiry submitted! (This is a demo - in production, this would send the data to your server)');
-      // In production, you would send form data to your backend
+      
+      const formPanel = inquiryForm.closest('[data-panel="inquiry"]');
+      if (!formPanel) return;
+      
+      const submitButton = inquiryForm.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton ? submitButton.textContent : 'Submit';
+      
+      // Validate form
+      if (!inquiryForm.checkValidity()) {
+        inquiryForm.reportValidity();
+        return;
+      }
+      
+      // Get form data
+      const formData = new FormData(inquiryForm);
+      const inquiryData = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        contact: formData.get('contact'),
+        inquiry_about: formData.get('inquiry_about'),
+        message: formData.get('message')
+      };
+      
+      // Set loading state
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending inquiry…';
+      }
+      
+      // Disable all form fields
+      const formFields = inquiryForm.querySelectorAll('input, select, textarea, button');
+      formFields.forEach(field => {
+        if (field !== submitButton) {
+          field.disabled = true;
+        }
+      });
+      
+      try {
+        // Simulate API call (mock - demo only)
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Simulate success (90% success rate for demo)
+        const isSuccess = Math.random() > 0.1;
+        
+        if (isSuccess) {
+          // Show success message
+          showInquirySuccess(formPanel, inquiryForm);
+        } else {
+          // Show error message
+          showInquiryError(formPanel, inquiryForm, submitButton, originalButtonText);
+        }
+      } catch (error) {
+        // Show error message
+        console.error('Error submitting inquiry:', error);
+        showInquiryError(formPanel, inquiryForm, submitButton, originalButtonText);
+      }
     });
+  }
+  
+  // Function to show inquiry success message
+  function showInquirySuccess(formPanel, formElement) {
+    // Hide the form
+    formElement.style.display = 'none';
+    
+    // Get the modal
+    const modal = formPanel.closest('[data-modal="booking"]') || 
+                  document.getElementById('bookingModal') ||
+                  document.querySelector('[data-modal="booking"]');
+    
+    // Create success message container
+    const successContainer = document.createElement('div');
+    successContainer.className = 'inquiry-message-container inquiry-success';
+    successContainer.innerHTML = `
+      <div class="inquiry-message-content">
+        <div class="inquiry-success-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="inquiry-message-title">Inquiry Sent Successfully</h3>
+        <p class="inquiry-message-text">
+          Thank you for contacting Northline Travel Co. Your inquiry has been received and our team will respond within 1–2 business days.
+        </p>
+        <p class="inquiry-message-detail">
+          We will send a response to the email address you provided. If your inquiry is urgent, please contact us directly.
+        </p>
+        <div class="inquiry-message-actions">
+          <button type="button" class="btn primary" data-close-booking>Close</button>
+        </div>
+      </div>
+    `;
+    
+    // Insert success message
+    formPanel.appendChild(successContainer);
+    
+    // The close button uses data-close-booking attribute which is handled by event delegation in main.js
+    
+    // Scroll to message
+    successContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  
+  // Function to show inquiry error message
+  function showInquiryError(formPanel, formElement, submitButton, originalButtonText) {
+    // Remove any existing error message
+    const existingError = formPanel.querySelector('.inquiry-message-container.inquiry-error');
+    if (existingError) {
+      existingError.remove();
+    }
+    
+    // Create error message container
+    const errorContainer = document.createElement('div');
+    errorContainer.className = 'inquiry-message-container inquiry-error';
+    errorContainer.innerHTML = `
+      <div class="inquiry-message-content">
+        <div class="inquiry-error-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="inquiry-message-title">Submission Failed</h3>
+        <p class="inquiry-message-text">
+          We encountered an issue while submitting your inquiry. Please try again, or contact us directly if the problem persists.
+        </p>
+        <div class="inquiry-message-actions">
+          <button type="button" class="btn primary" id="retry-inquiry-btn">Try Again</button>
+        </div>
+      </div>
+    `;
+    
+    // Insert error message before the form
+    formPanel.insertBefore(errorContainer, formElement);
+    
+    // Re-enable form fields
+    const formFields = formElement.querySelectorAll('input, select, textarea, button');
+    formFields.forEach(field => {
+      field.disabled = false;
+    });
+    
+    // Restore submit button
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = originalButtonText;
+    }
+    
+    // Handle retry button
+    const retryBtn = errorContainer.querySelector('#retry-inquiry-btn');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => {
+        errorContainer.remove();
+        // Re-enable form fields in case they were disabled
+        formFields.forEach(field => {
+          field.disabled = false;
+        });
+      });
+    }
+    
+    // Scroll to error message
+    errorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 

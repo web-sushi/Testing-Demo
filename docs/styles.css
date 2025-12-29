@@ -820,6 +820,69 @@ a {
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
+/* Inquiry Message Styles */
+.inquiry-message-container {
+  padding: 32px 24px;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.inquiry-message-content {
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.inquiry-success-icon,
+.inquiry-error-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 24px;
+}
+
+.inquiry-success-icon {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.inquiry-error-icon {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.inquiry-message-title {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 16px 0;
+  line-height: 1.3;
+}
+
+.inquiry-message-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0 0 12px 0;
+}
+
+.inquiry-message-detail {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0 0 32px 0;
+  opacity: 0.9;
+}
+
+.inquiry-message-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
