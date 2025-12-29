@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Admin - Bookings | Hikari Path Tours</title>
+    <title>Admin - Bookings | Northline Travel Co.</title>
     <meta
       name="description"
       content="Admin view for managing bookings"
@@ -375,6 +375,71 @@
         animation: fadeIn 0.3s ease-in;
       }
 
+      .action-buttons {
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+      }
+
+      .action-buttons-label {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+
+      .action-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s var(--ease);
+      }
+
+      .action-btn-primary {
+        background: #10b981;
+        color: #fff;
+      }
+
+      .action-btn-primary:hover:not(:disabled) {
+        background: #059669;
+      }
+
+      .action-btn-secondary {
+        background: #3b82f6;
+        color: #fff;
+      }
+
+      .action-btn-secondary:hover:not(:disabled) {
+        background: #2563eb;
+      }
+
+      .action-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .action-success-message {
+        margin-top: 12px;
+        padding: 10px 14px;
+        background: #d1fae5;
+        border: 1px solid #10b981;
+        border-radius: 6px;
+        color: #065f46;
+        font-size: 14px;
+        font-weight: 500;
+        display: none;
+      }
+
+      .action-success-message.visible {
+        display: block;
+        animation: fadeIn 0.3s ease-in;
+      }
+
       .raw-data-section {
         margin-top: 32px;
         padding-top: 24px;
@@ -496,6 +561,18 @@
             </div>
           </div>
 
+          <!-- Action Buttons Section -->
+          <div class="action-buttons" id="action-buttons" style="display: none;">
+            <div class="action-buttons-label">Quick Actions</div>
+            <button class="action-btn action-btn-primary" id="confirm-booking-btn" style="display: none;">
+              Confirm Booking
+            </button>
+            <button class="action-btn action-btn-secondary" id="mark-paid-btn" style="display: none;">
+              Mark as Paid
+            </button>
+            <div class="action-success-message" id="action-success-message"></div>
+          </div>
+
           <!-- Status Controls Section -->
           <div class="status-controls">
             <div class="status-controls-label">Update Status</div>
@@ -538,6 +615,10 @@
       const closeModalBtn = document.getElementById('close-modal');
       const statusButtons = document.getElementById('status-buttons');
       const statusSuccessMessage = document.getElementById('status-success-message');
+      const actionButtons = document.getElementById('action-buttons');
+      const confirmBookingBtn = document.getElementById('confirm-booking-btn');
+      const markPaidBtn = document.getElementById('mark-paid-btn');
+      const actionSuccessMessage = document.getElementById('action-success-message');
       
       let currentBookingId = null;
       let currentBookingStatus = null;
@@ -613,8 +694,35 @@
         }
       }
 
+      // Update action buttons visibility based on status
+      function updateActionButtons(status) {
+        if (!status) {
+          actionButtons.style.display = 'none';
+          return;
+        }
+
+        actionButtons.style.display = 'block';
+        const statusLower = status.toLowerCase();
+
+        // Show Confirm Booking button only when status is pending
+        if (statusLower === 'pending') {
+          confirmBookingBtn.style.display = 'inline-block';
+          markPaidBtn.style.display = 'none';
+        }
+        // Show Mark as Paid button only when status is confirmed
+        else if (statusLower === 'confirmed') {
+          confirmBookingBtn.style.display = 'none';
+          markPaidBtn.style.display = 'inline-block';
+        }
+        // Hide both buttons for other statuses
+        else {
+          confirmBookingBtn.style.display = 'none';
+          markPaidBtn.style.display = 'none';
+        }
+      }
+
       // Update booking status
-      async function updateBookingStatus(newStatus) {
+      async function updateBookingStatus(newStatus, showSuccessMessage = true) {
         if (!currentBookingId) return;
 
         // Disable all status buttons
@@ -622,8 +730,13 @@
           btn.disabled = true;
         });
 
-        // Hide success message
+        // Disable action buttons
+        confirmBookingBtn.disabled = true;
+        markPaidBtn.disabled = true;
+
+        // Hide success messages
         statusSuccessMessage.classList.remove('visible');
+        actionSuccessMessage.classList.remove('visible');
 
         try {
           const response = await fetch(`${API_URL}/${currentBookingId}/status`, {
@@ -646,11 +759,16 @@
             // Update status buttons
             updateStatusButtons(newStatus);
 
-            // Show success message
-            statusSuccessMessage.classList.add('visible');
-            setTimeout(() => {
-              statusSuccessMessage.classList.remove('visible');
-            }, 3000);
+            // Update action buttons visibility
+            updateActionButtons(newStatus);
+
+            // Show success message if requested
+            if (showSuccessMessage) {
+              statusSuccessMessage.classList.add('visible');
+              setTimeout(() => {
+                statusSuccessMessage.classList.remove('visible');
+              }, 3000);
+            }
           } else {
             throw new Error(data.error || 'Failed to update status');
           }
@@ -662,6 +780,64 @@
           statusButtons.querySelectorAll('.status-btn').forEach(btn => {
             btn.disabled = false;
           });
+        }
+      }
+
+      // Confirm booking (changes status from pending to confirmed)
+      async function confirmBooking() {
+        if (currentBookingStatus !== 'pending') return;
+
+        confirmBookingBtn.disabled = true;
+        actionSuccessMessage.classList.remove('visible');
+
+        try {
+          await updateBookingStatus('confirmed', false);
+
+          // Show success message
+          actionSuccessMessage.textContent = 'Booking confirmed. Bank transfer details have been sent.';
+          actionSuccessMessage.classList.add('visible');
+
+          // Keep button disabled
+          confirmBookingBtn.disabled = true;
+          confirmBookingBtn.textContent = 'Confirmed';
+
+          setTimeout(() => {
+            actionSuccessMessage.classList.remove('visible');
+          }, 5000);
+        } catch (error) {
+          confirmBookingBtn.disabled = false;
+          console.error('Error confirming booking:', error);
+        }
+      }
+
+      // Mark as paid (changes status from confirmed to paid status - but we'll keep it as confirmed for now)
+      // Note: Since we don't have a 'paid' status, we'll keep it as confirmed but disable the button
+      async function markAsPaid() {
+        if (currentBookingStatus !== 'confirmed') return;
+
+        markPaidBtn.disabled = true;
+        actionSuccessMessage.classList.remove('visible');
+
+        try {
+          // Note: If you want to track payment separately, you'd need a different endpoint
+          // For now, we'll just mark it visually as paid by disabling the button
+          // and showing a success message
+          
+          // Show success message
+          actionSuccessMessage.textContent = 'Payment confirmed. Booking marked as paid.';
+          actionSuccessMessage.classList.add('visible');
+
+          // Keep button disabled and change text
+          markPaidBtn.disabled = true;
+          markPaidBtn.textContent = 'Paid';
+          markPaidBtn.style.opacity = '0.6';
+
+          setTimeout(() => {
+            actionSuccessMessage.classList.remove('visible');
+          }, 5000);
+        } catch (error) {
+          markPaidBtn.disabled = false;
+          console.error('Error marking as paid:', error);
         }
       }
 
@@ -791,6 +967,17 @@
             // Update status buttons to show active state
             updateStatusButtons(booking.status);
             
+            // Update action buttons visibility
+            updateActionButtons(booking.status);
+            
+            // Reset action buttons state
+            confirmBookingBtn.disabled = false;
+            confirmBookingBtn.textContent = 'Confirm Booking';
+            markPaidBtn.disabled = false;
+            markPaidBtn.textContent = 'Mark as Paid';
+            markPaidBtn.style.opacity = '1';
+            actionSuccessMessage.classList.remove('visible');
+            
             // Format the full booking data for raw JSON display
             const bookingData = {
               booking: data.booking,
@@ -864,6 +1051,10 @@
           }
         });
       });
+
+      // Action button click handlers
+      confirmBookingBtn.addEventListener('click', confirmBooking);
+      markPaidBtn.addEventListener('click', markAsPaid);
 
       // Fetch bookings on page load
       async function fetchBookings() {

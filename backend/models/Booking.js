@@ -107,6 +107,25 @@ class Booking {
     const sql = 'SELECT * FROM bookings WHERE booking_type = ? ORDER BY created_at DESC';
     db.all(sql, [booking_type], callback);
   }
+
+  /**
+   * Count confirmed bookings for a specific date
+   * Only counts bookings with status 'confirmed' (pending and cancelled are excluded)
+   */
+  static countByDate(date, callback) {
+    const sql = `
+      SELECT COUNT(*) as count 
+      FROM bookings 
+      WHERE selected_date = ? 
+      AND status IN ('confirmed')
+    `;
+    db.get(sql, [date], (err, row) => {
+      if (err) {
+        return callback(err, null);
+      }
+      callback(null, row ? row.count : 0);
+    });
+  }
 }
 
 module.exports = Booking;

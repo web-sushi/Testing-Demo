@@ -21,10 +21,8 @@ app.get('/health', (req, res) => {
 
 // Routes
 const bookingsRoutes = require('./routes/bookings');
-const paymentsRoutes = require('./routes/payments');
 
 app.use('/api/bookings', bookingsRoutes);
-app.use('/api/payments', paymentsRoutes);
 
 // 404 handler
 app.use((req, res) => {

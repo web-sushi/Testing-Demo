@@ -1417,11 +1417,33 @@ function initBookingForm() {
       const tourTypeRadio = document.querySelector('input[name="tour_type"]:checked');
       const booking_type = tourTypeRadio?.value || '';
       
-      // Get selected date from calendar
+      // Get selected date from calendar and convert to YYYY-MM-DD format
       const selectedDateElement = document.querySelector('.calendar-day.selected');
-      const monthYear = document.querySelector('[data-cal-month]')?.textContent || '';
-      const dayText = selectedDateElement?.textContent || '';
-      const selected_date = selectedDateElement ? `${monthYear} ${dayText}` : '';
+      let selected_date = '';
+      
+      if (selectedDateElement) {
+        const monthYear = document.querySelector('[data-cal-month]')?.textContent || '';
+        const dayText = selectedDateElement?.textContent || '';
+        
+        if (monthYear && dayText) {
+          // Parse month and day from display format (e.g., "December 15")
+          const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'];
+          const monthMatch = monthYear.match(/(\w+)/);
+          const day = parseInt(dayText);
+          
+          if (monthMatch) {
+            const monthName = monthMatch[1];
+            const monthIndex = monthNames.findIndex(m => m.toLowerCase() === monthName.toLowerCase());
+            
+            if (monthIndex !== -1) {
+              const currentYear = new Date().getFullYear();
+              const dateObj = new Date(currentYear, monthIndex, day);
+              selected_date = dateObj.toISOString().split('T')[0]; // Convert to YYYY-MM-DD
+            }
+          }
+        }
+      }
       
       // Get estimated price (from summary or calculate)
       let estimated_price = null;
@@ -1504,27 +1526,30 @@ function initBookingForm() {
           const successMessage = `
             <div style="text-align: center; padding: 2rem;">
               <div style="font-size: 3rem; margin-bottom: 1rem;">✓</div>
-              <h3 style="color: #10b981; margin-bottom: 0.5rem;">Booking request received</h3>
-              <p style="font-size: 1.1rem; margin-bottom: 0.5rem; color: #374151;">
-                Your booking ID: <strong>${data.booking_id}</strong>
+              <h3 style="color: #10b981; margin-bottom: 1rem;">Thank you for your booking</h3>
+              <p style="font-size: 1rem; line-height: 1.6; color: #374151; max-width: 500px; margin: 0 auto;">
+                We will review your request and send payment details after confirmation.
               </p>
-              <p style="color: #6b7280; margin-top: 0.5rem;">We'll contact you shortly.</p>
             </div>
           `;
           showBookingMessage(successMessage, 'success');
           
-          // Hide submit button and form actions on success
+          // Hide submit button and form actions on success to prevent duplicate submissions
           const formActions = document.querySelector('[data-step="4"] .form-actions');
           if (formActions) {
             formActions.style.display = 'none';
           }
+          
+          // Keep button disabled to prevent duplicate submissions
+          submitBooking.disabled = true;
+          submitBooking.textContent = 'Booking Submitted';
           
           // Reset form after a short delay
           setTimeout(() => {
             resetBookingForm();
           }, 500);
           
-          // Close modal after 2.5 seconds
+          // Close modal after 3 seconds
           const modal = document.getElementById('bookingModal') || document.querySelector('[data-modal="booking"]');
           if (modal) {
             setTimeout(() => {
@@ -1535,7 +1560,7 @@ function initBookingForm() {
               if (formActions) {
                 formActions.style.display = '';
               }
-            }, 2500);
+            }, 3000);
           }
         } else {
           // Error from server - show error message in modal

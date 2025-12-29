@@ -308,38 +308,71 @@ function initializeCalendarInstance(calendarGrid, monthDisplay, prevBtn, nextBtn
     "July", "August", "September", "October", "November", "December"
   ];
 
-  // Simulate booked dates (in a real app, this would come from an API)
-  const bookedDates = [
-    new Date(2024, 11, 15),
-    new Date(2024, 11, 20),
-    new Date(2024, 11, 25),
-    new Date(2025, 0, 5),
-    new Date(2025, 0, 12),
-  ];
+  // Cache for availability data to avoid repeated API calls
+  const availabilityCache = new Map();
 
-  // Simulate busy dates (limited availability)
-  const busyDates = [
-    new Date(2026, 0, 3),
-    new Date(2026, 0, 8),
-    new Date(2026, 0, 15),
-    new Date(2026, 0, 18),
-    new Date(2026, 0, 22),
-    new Date(2026, 0, 28),
-  ];
+  /**
+   * Check availability for a specific date via API
+   * Returns: 'available' (0 bookings), 'busy' (1 booking), or 'full' (2 bookings)
+   */
+  async function checkDateAvailability(date) {
+    // Format date as YYYY-MM-DD
+    const dateStr = date.toISOString().split('T')[0];
+    const cacheKey = dateStr;
 
-  function isBooked(date) {
-    return bookedDates.some(booked => 
-      date.getTime() === booked.getTime()
-    );
+    // Check cache first
+    if (availabilityCache.has(cacheKey)) {
+      return availabilityCache.get(cacheKey);
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/bookings/availability?date=${dateStr}`);
+      if (!response.ok) {
+        console.error('Error checking availability:', response.statusText);
+        return 'unknown'; // Default to unknown if API fails
+      }
+
+      const data = await response.json();
+      if (data.success) {
+        const confirmedCount = data.confirmed_count || 0;
+        const capacity = data.capacity || 2;
+        
+        let status;
+        if (confirmedCount >= capacity) {
+          status = 'full'; // Red - no capacity
+        } else if (confirmedCount === capacity - 1) {
+          status = 'busy'; // Yellow - limited availability
+        } else {
+          status = 'available'; // Green - available
+        }
+
+        // Cache the result
+        availabilityCache.set(cacheKey, status);
+        return status;
+      }
+    } catch (error) {
+      console.error('Error fetching availability:', error);
+      return 'unknown'; // Default to unknown if network error
+    }
+
+    return 'unknown';
   }
 
-  function isBusy(date) {
-    return busyDates.some(busy => 
-      date.getTime() === busy.getTime()
-    );
+  /**
+   * Check if date is full (cannot be selected)
+   */
+  function isBooked(availabilityStatus) {
+    return availabilityStatus === 'full';
   }
 
-  function renderCalendar() {
+  /**
+   * Check if date is busy (limited availability)
+   */
+  function isBusy(availabilityStatus) {
+    return availabilityStatus === 'busy';
+  }
+
+  async function renderCalendar() {
     // Use the global currentDate if available, otherwise use local
     const dateToUse = window.bookingCalendarCurrentDate || currentDate;
     const year = dateToUse.getFullYear();
@@ -366,6 +399,8 @@ function initializeCalendarInstance(calendarGrid, monthDisplay, prevBtn, nextBtn
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
+    // Create all day elements first
+    const dayElements = [];
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day);
       const dayElement = document.createElement("div");
@@ -381,64 +416,86 @@ function initializeCalendarInstance(calendarGrid, monthDisplay, prevBtn, nextBtn
       if (date < today) {
         dayElement.classList.add("disabled");
       } else {
-        // Check if it's booked (full)
-        if (isBooked(date)) {
-          dayElement.classList.add("booked");
-        } 
-        // Check if it's busy (limited availability)
-        else if (isBusy(date)) {
-          dayElement.classList.add("busy");
-          
-          // Add click handler for busy dates (still selectable but with warning)
-          dayElement.addEventListener("click", () => {
-            // Remove previous selection
-            document.querySelectorAll(".calendar-day.selected").forEach(el => {
-              el.classList.remove("selected");
-            });
-            
-            // Add selection to clicked date
-            dayElement.classList.add("selected");
-            selectedDate = date;
-            
-            // Show form tabs when date is selected
-            const formTabs = document.querySelector('.booking-form-tabs');
-            if (formTabs) {
-              formTabs.classList.add('show');
-            }
-          });
-        } 
-        // Available (free)
-        else {
-          dayElement.classList.add("available");
-          
-          // Add click handler for available dates
-          dayElement.addEventListener("click", () => {
-            // Remove previous selection
-            document.querySelectorAll(".calendar-day.selected").forEach(el => {
-              el.classList.remove("selected");
-            });
-            
-            // Add selection to clicked date
-            dayElement.classList.add("selected");
-            selectedDate = date;
-            
-            // Show form tabs when date is selected (for modal)
-            const formTabs = document.querySelector('.booking-form-tabs');
-            if (formTabs) {
-              formTabs.classList.add('show');
-            }
-            
-            // Enable Next button for contact page calendar
-            const contactCalendarNextBtn = document.getElementById('contact-calendar-next-btn');
-            if (contactCalendarNextBtn) {
-              contactCalendarNextBtn.disabled = false;
-            }
-          });
-        }
+        // Initially mark as loading/pending (will be updated after availability check)
+        dayElement.classList.add("pending");
+        dayElement.setAttribute("data-date", date.toISOString().split('T')[0]);
       }
 
       calendarGrid.appendChild(dayElement);
+      dayElements.push({ element: dayElement, date: date });
     }
+
+    // Check availability for all dates in parallel
+    const availabilityPromises = dayElements
+      .filter(item => item.date >= today)
+      .map(async (item) => {
+        const availabilityStatus = await checkDateAvailability(item.date);
+        return { element: item.element, date: item.date, status: availabilityStatus };
+      });
+
+    const availabilityResults = await Promise.all(availabilityPromises);
+
+    // Update day elements with availability status
+    availabilityResults.forEach(({ element, date, status }) => {
+      element.classList.remove("pending");
+
+      if (status === 'full') {
+        // Full - red, not selectable
+        element.classList.add("booked");
+      } else if (status === 'busy') {
+        // Busy - yellow, selectable
+        element.classList.add("busy");
+        
+        // Add click handler for busy dates (still selectable but with warning)
+        element.addEventListener("click", () => {
+          // Remove previous selection
+          document.querySelectorAll(".calendar-day.selected").forEach(el => {
+            el.classList.remove("selected");
+          });
+          
+          // Add selection to clicked date
+          element.classList.add("selected");
+          selectedDate = date;
+          
+          // Show form tabs when date is selected
+          const formTabs = document.querySelector('.booking-form-tabs');
+          if (formTabs) {
+            formTabs.classList.add('show');
+          }
+        });
+      } else if (status === 'available') {
+        // Available - green, selectable
+        element.classList.add("available");
+        
+        // Add click handler for available dates
+        element.addEventListener("click", () => {
+          // Remove previous selection
+          document.querySelectorAll(".calendar-day.selected").forEach(el => {
+            el.classList.remove("selected");
+          });
+          
+          // Add selection to clicked date
+          element.classList.add("selected");
+          selectedDate = date;
+          
+          // Show form tabs when date is selected (for modal)
+          const formTabs = document.querySelector('.booking-form-tabs');
+          if (formTabs) {
+            formTabs.classList.add('show');
+          }
+          
+          // Enable Next button for contact page calendar
+          const contactCalendarNextBtn = document.getElementById('contact-calendar-next-btn');
+          if (contactCalendarNextBtn) {
+            contactCalendarNextBtn.disabled = false;
+          }
+        });
+      } else {
+        // Unknown status - default to available but log warning
+        console.warn('Unknown availability status for date:', date);
+        element.classList.add("available");
+      }
+    });
   }
 
   if (prevBtn) {
