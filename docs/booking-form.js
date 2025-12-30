@@ -1417,32 +1417,57 @@ function initBookingForm() {
       const tourTypeRadio = document.querySelector('input[name="tour_type"]:checked');
       const booking_type = tourTypeRadio?.value || '';
       
-      // Get selected date from calendar and convert to YYYY-MM-DD format
+      // Get selected date from calendar using data-date attribute (more reliable)
       const selectedDateElement = document.querySelector('.calendar-day.selected');
       let selected_date = '';
       
       if (selectedDateElement) {
-        const monthYear = document.querySelector('[data-cal-month]')?.textContent || '';
-        const dayText = selectedDateElement?.textContent || '';
+        // Use data-date attribute which contains the ISO date string (YYYY-MM-DD)
+        // This is set by the calendar rendering logic and is more reliable than parsing text
+        const dataDate = selectedDateElement.getAttribute('data-date');
         
-        if (monthYear && dayText) {
-          // Parse month and day from display format (e.g., "December 15")
-          const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'];
-          const monthMatch = monthYear.match(/(\w+)/);
-          const day = parseInt(dayText);
+        if (dataDate) {
+          // Validate the date format (YYYY-MM-DD)
+          const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+          if (dateRegex.test(dataDate)) {
+            selected_date = dataDate;
+          } else {
+            console.error('Invalid date format in data-date attribute:', dataDate);
+          }
+        } else {
+          // Fallback: try to parse from display text (for backwards compatibility)
+          const monthYear = document.querySelector('[data-cal-month]')?.textContent || '';
+          const dayText = selectedDateElement?.textContent || '';
           
-          if (monthMatch) {
-            const monthName = monthMatch[1];
-            const monthIndex = monthNames.findIndex(m => m.toLowerCase() === monthName.toLowerCase());
+          if (monthYear && dayText) {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+              'July', 'August', 'September', 'October', 'November', 'December'];
+            const monthMatch = monthYear.match(/(\w+)\s+(\d{4})/); // Match "Month YYYY"
+            const day = parseInt(dayText);
             
-            if (monthIndex !== -1) {
-              const currentYear = new Date().getFullYear();
-              const dateObj = new Date(currentYear, monthIndex, day);
-              selected_date = dateObj.toISOString().split('T')[0]; // Convert to YYYY-MM-DD
+            if (monthMatch) {
+              const monthName = monthMatch[1];
+              const year = parseInt(monthMatch[2]);
+              const monthIndex = monthNames.findIndex(m => m.toLowerCase() === monthName.toLowerCase());
+              
+              if (monthIndex !== -1 && !isNaN(year) && !isNaN(day)) {
+                const dateObj = new Date(year, monthIndex, day);
+                // Validate the date is valid (handles edge cases like Feb 30)
+                if (dateObj.getFullYear() === year && dateObj.getMonth() === monthIndex && dateObj.getDate() === day) {
+                  selected_date = dateObj.toISOString().split('T')[0];
+                } else {
+                  console.error('Invalid date constructed:', year, monthIndex, day);
+                }
+              }
             }
           }
         }
+      }
+      
+      // Validate that a date was selected
+      if (!selected_date) {
+        alert('Please select a date from the calendar before submitting.');
+        return;
       }
       
       // Get estimated price (from summary or calculate)

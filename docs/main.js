@@ -311,6 +311,11 @@ function initBookingModal() {
 /* =========================
    BOOKING CALENDAR
 ========================= */
+
+// Global cache for availability data to persist across calendar reinitializations
+// This ensures booking data doesn't disappear when the calendar is re-rendered
+window.bookingAvailabilityCache = window.bookingAvailabilityCache || new Map();
+
 function initBookingCalendar() {
   // Try to find calendar in visible areas first, then check hidden areas
   let calendarGrid = document.querySelector("[data-cal-grid]");
@@ -351,8 +356,9 @@ function initializeCalendarInstance(calendarGrid, monthDisplay, prevBtn, nextBtn
     "July", "August", "September", "October", "November", "December"
   ];
 
-  // Cache for availability data to avoid repeated API calls
-  const availabilityCache = new Map();
+  // Use global cache instead of creating a new one each time
+  // This ensures booking data persists across calendar reinitializations
+  const availabilityCache = window.bookingAvailabilityCache;
 
   /**
    * Check availability for a specific date via API
@@ -389,7 +395,7 @@ function initializeCalendarInstance(calendarGrid, monthDisplay, prevBtn, nextBtn
           status = 'available'; // Green - available
         }
 
-        // Cache the result
+        // Cache the result in global cache
         availabilityCache.set(cacheKey, status);
         return status;
       }
@@ -446,17 +452,20 @@ function initializeCalendarInstance(calendarGrid, monthDisplay, prevBtn, nextBtn
     const dayElements = [];
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day);
+      // Ensure date is at midnight local time for accurate comparison
+      date.setHours(0, 0, 0, 0);
+      
       const dayElement = document.createElement("div");
       dayElement.className = "calendar-day";
       dayElement.textContent = day;
 
-      // Check if it's today
+      // Check if it's today (compare timestamps)
       if (date.getTime() === today.getTime()) {
         dayElement.classList.add("today");
       }
 
-      // Check if it's in the past
-      if (date < today) {
+      // Check if it's in the past (compare timestamps)
+      if (date.getTime() < today.getTime()) {
         dayElement.classList.add("disabled");
       } else {
         // Initially mark as loading/pending (will be updated after availability check)
@@ -469,8 +478,9 @@ function initializeCalendarInstance(calendarGrid, monthDisplay, prevBtn, nextBtn
     }
 
     // Check availability for all dates in parallel
+    // Use getTime() for accurate timestamp comparison
     const availabilityPromises = dayElements
-      .filter(item => item.date >= today)
+      .filter(item => item.date.getTime() >= today.getTime())
       .map(async (item) => {
         const availabilityStatus = await checkDateAvailability(item.date);
         return { element: item.element, date: item.date, status: availabilityStatus };
@@ -535,8 +545,33 @@ function initializeCalendarInstance(calendarGrid, monthDisplay, prevBtn, nextBtn
         });
       } else {
         // Unknown status - default to available but log warning
-        console.warn('Unknown availability status for date:', date);
+        // IMPORTANT: Still add click handler so dates are selectable even if API fails
+        console.warn('Unknown availability status for date:', date, '- defaulting to available');
         element.classList.add("available");
+        
+        // Add click handler for unknown/available dates (when API fails)
+        element.addEventListener("click", () => {
+          // Remove previous selection
+          document.querySelectorAll(".calendar-day.selected").forEach(el => {
+            el.classList.remove("selected");
+          });
+          
+          // Add selection to clicked date
+          element.classList.add("selected");
+          selectedDate = date;
+          
+          // Show form tabs when date is selected
+          const formTabs = document.querySelector('.booking-form-tabs');
+          if (formTabs) {
+            formTabs.classList.add('show');
+          }
+          
+          // Enable Next button for contact page calendar
+          const contactCalendarNextBtn = document.getElementById('contact-calendar-next-btn');
+          if (contactCalendarNextBtn) {
+            contactCalendarNextBtn.disabled = false;
+          }
+        });
       }
     });
   }
